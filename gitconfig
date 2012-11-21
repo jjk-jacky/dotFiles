@@ -1,0 +1,34 @@
+[user]
+    name = jjacky
+    email = i.am.jack.mail@gmail.com
+[format]
+    signoff = true
+[sendemail]
+    smtpencryption = tls
+    smtpserver = smtp.gmail.com
+    smtpuser = i.am.jack.mail@gmail.com
+    smtpserverport = 587
+[core]
+    editor = vim
+#   pager = less -+$LESS -RS
+[merge]
+    tool = meld
+[color]
+    status = auto
+    branch = auto
+    interactive = auto
+    diff = auto
+[alias]
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    next = shortlog master..next
+    co = checkout
+    st = status
+    l = log --decorate --graph
+    flog = log --decorate --graph --all
+    d = diff
+    a = add
+    cm = commit
+    rb = rebase
+    m = merge
+    ff = merge --ff-only

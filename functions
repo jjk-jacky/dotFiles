@@ -1,0 +1,124 @@
+_confirm() {
+    echo
+    echo -n "$1 [Y/n] "
+    read doit
+    case $doit in
+        ""|[Yy]*)
+            return 1
+            ;;
+        *)
+            return 0
+        ;;
+    esac
+}
+
+# make folder and go there
+mkcd() {
+    mkdir -p -v "$1" && cd "$1" && pwd
+}
+
+# download tarball from AUR and makepkg it
+aur() {
+    cd ~/aur
+    wget -4 https://aur.archlinux.org/packages/${1:0:2}/$1/$1.tar.gz
+    tar xzf $1.tar.gz
+    cd $1
+    pwd
+    ls
+    _confirm "less PKGBUILD?"
+    if [ $? = 1 ]; then
+            less PKGBUILD
+    fi
+    _confirm "makepkg -c?"
+    if [ $? = 1 ]; then
+        makepkg -c
+        if [[ $? = 0 ]]; then
+            local pkg
+            pkg=$(ls *.pkg.tar.xz)
+            _confirm "pcu ./$pkg?"
+            if [[ $? = 1 ]]; then
+                pcu "./$pkg"
+            fi
+        fi
+    fi
+}
+
+# auto-updates PKGBUILD w/ makepkg -g
+mg() {
+    if [ ! -f ./PKGBUILD ]; then
+        echo "No PKGBUILD in `pwd`"
+        return 1
+    fi
+
+    awk -v newsums="$(makepkg -g)" '
+BEGIN {
+    if (!newsums) exit 1
+}
+
+/^[[:blank:]]*(md|sha)[[:digit:]]+sums=/,/\)[[:blank:]]*$/ {
+    if (!i) print newsums; i++
+    next
+}
+
+1
+' PKGBUILD > PKGBUILD.new && mv -f PKGBUILD{.new,}
+
+        echo "PKGBUILD updated"
+}
+
+# an alias for 'sudo localepurge' that's also used from pacman-functions (below)
+lp() {
+    if [ "$1" = '-i' ]; then
+        _confirm "Run localepurge?"
+        if [ $? = 1 ]; then
+            sudo localepurge
+        fi
+    else
+        sudo localepurge
+    fi
+}
+
+syu() {
+    sudo pacman -Syu
+    lp -i
+}
+
+pcs() {
+    sudo pacman -S $@
+    lp -i
+}
+
+pcu() {
+    # because we want local packages to be added to the pacman cache, we'll
+    # turn any ./foobar.pkg (usual way to call this) into file:///....foobar.pkg
+    # this will trigger the downloader, and get the package into the cache
+    local PKG lcl
+    lcl=0
+    PKG=$@
+    if [[ ${PKG:0:2} == "./" ]]; then
+        if [[ -f "/var/cache/pacman/pkg/${PKG:2}" ]]; then
+            echo "Warning: file found in cache, using it instead of local one"
+        fi
+        PKG="file://$PWD/${PKG:2}"
+        lcl=1
+    fi
+
+    sudo pacman -U $PKG
+    lp -i
+    if [[ $lcl -eq 1 ]]; then
+        _confirm "rm $@?"
+        if [ $? = 1 ]; then
+            rm "$@"
+        fi
+    fi
+    # add to repo jjk if from ~/abs
+    if [[ ${PKG:0:24} == "file://$HOME/abs/" ]]; then
+        addtojjk ${PKG:7}
+    fi
+}
+
+# by schalox: https://bbs.archlinux.org/viewtopic.php?pid=1070911#p1070911
+bigpkgs() {
+    pacman -Qi | \
+        awk '/^Name/ {pkg=$3} /^Installed/ {gsub(/\.00/, ""); print $4,$5,pkg}' | sort -n
+}

@@ -1,0 +1,86 @@
+# some confirmations, to be safe
+alias rm='rm -I'
+alias mv='mv -i'
+alias cp='cp -i'
+alias ln='ln -i'
+
+# lazy lazy lazy
+alias ls='ls --color=auto'
+alias l='ls'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+
+# so that aliases work through sudo as well
+alias sudo='sudo '
+
+alias vi='vim'
+alias svi='sudo vim'
+alias gv='gvim'
+alias gvi='gvim'
+
+alias psg='ssh psg'
+alias tks='ssh tks'
+
+alias netfix='sudo systemctl restart network.service'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias df='df -h'
+alias free='free -m'
+alias mkdir='mkdir -p -v'   # creates parent, verbose
+alias ping='ping -c5'       # otherwise it never stops :p
+alias x='exit'
+
+alias px='echo "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND" && ps aux | grep --color=auto'
+
+alias vacuum-firefox='du -chs ~/.mozilla && find ~/.mozilla -name \*.sqlite -exec sqlite3 {} vacuum \; -exec sqlite3 {} reindex \; && du -chs ~/.mozilla'
+alias vacuum-thunderbird='du -chs ~/.thunderbird && find ~/.thunderbird -name \*.sqlite -exec sqlite3 {} vacuum \; -exec sqlite3 {} reindex \; && du -chs ~/.thunderbird'
+
+alias y='youtube-dl -t -f44'
+alias ycp="scp tks:/tmp/'*.webm' /tmp"
+
+# Deleted Libraries In Use
+alias dliu='lsof +c 0 | grep '"'"'DEL.*lib'"'"' | awk '"'"'1 { print $1 ": " $NF }'"'"' | sort -u'
+
+alias iotop='sudo iotop -oPa'
+alias abs='sudo abs'
+
+# services
+alias start='sudo systemctl start'
+alias restart='sudo systemctl restart'
+alias stop='sudo systemctl stop'
+alias status='systemctl status'
+alias st='systemctl status'
+
+alias sc='systemctl'
+alias ssc='sudo systemctl'
+alias jc='journalctl'
+alias sjc='sudo journalctl'
+alias lc='loginctl'
+alias sess='loginctl show-session'
+alias sessst='loginctl session-status'
+
+alias ev='journalctl -b'
+alias sky='journalctl -b _KERNEL_DEVICE=+pci:0000:02:00.0'
+
+# pacman
+#alias syu='sudo pacman -Syu' # function to ask to launch localepurge, see functions
+alias pcss='pacman -Ss'
+alias pcsi='pacman -Si'
+alias pcqs='pacman -Qs'
+alias pcqi='pacman -Qi'
+alias pcqo='pacman -Qo'
+alias pcql='pacman -Ql'
+alias pcqdtq='pacman -Qdtq'
+alias pcrs='sudo pacman -Rs'
+alias pcrsq='pacman -Qdtq | sudo pacman -Rs -'
+#alias pcs='sudo pacman -S' # same as syu
+#alias pcu='sudo pacman -U' # same as syu
+
+#alias lp='sudo localepurge' # function as well
+alias lpc='sudo localepurge.config'
+
+# git
+alias g='git'

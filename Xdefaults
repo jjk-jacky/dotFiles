@@ -1,0 +1,33 @@
+URxvt.geometry:			100x32
+URxvt.background:		black
+URxvt.foreground:		gray
+URxvt.jumpScroll:		false
+URxvt.scrollstyle:		plain
+URxvt.scrollBar_right:		true
+URxvt.scrollTtyOutput:		true
+URxvt.scrollTtyKeypress:	true
+URxvt.secondaryScroll:		false
+URxvt.secondaryWheel:		true
+URxvt.pastableTabs:		true
+URxvt.print-pipe:		cat > $(echo urxvt.dump.`date +'%Y%M%d%H%m%S'`)
+URxvt.fading:			42
+URxvt.font:			xft:Dina:pixelsize=11:antialias=false
+#URxvt.boldFont:			xft:Droid Sans Mono:pixelsize=11:antialias=false:weight=230
+URxvt.cursorColor:		green
+URxvt.cursorColor2:		black
+URxvt.colorBD:			white
+URxvt.colorUL:			#87afd7
+
+#URxvt.font: xft:Prodifo:antialias=false:pixelsize=16
+#URxvt.boldFont: xft:DejaVu Sans Mono:style=bold:antialias=false:pixelsize=11
+#URxvt.italicFont: xft:DejaVu Sans Mono:style=italic:antialias=false:pixelsize=11
+#URxvt.boldItalicFont: xft:DejaVu Sans Mono:style=bolditalic:antialias=false:pixelsize=11
+
+URxvt.iconFile:			/usr/share/icons/gnome/16x16/apps/terminal.png
+URxvt.selection.pattern-0:	([[:word:]]+)
+
+URxvt.keysym.Control-Up:	\033[1;5A
+URxvt.keysym.Control-Down:	\033[1;5B
+URxvt.keysym.Control-Left:	\033[1;5D
+URxvt.keysym.Control-Right:	\033[1;5C
+
