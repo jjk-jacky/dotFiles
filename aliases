@@ -38,8 +38,10 @@ alias px='echo "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME
 alias vacuum-firefox='du -chs ~/.mozilla && find ~/.mozilla -name \*.sqlite -exec sqlite3 {} vacuum \; -exec sqlite3 {} reindex \; && du -chs ~/.mozilla'
 alias vacuum-thunderbird='du -chs ~/.thunderbird && find ~/.thunderbird -name \*.sqlite -exec sqlite3 {} vacuum \; -exec sqlite3 {} reindex \; && du -chs ~/.thunderbird'
 
-alias y='youtube-dl -t -f44'
+alias y='youtube-dl -o /tmp/%\(title\)s.%\(ext\)s -f44'
+alias yy='youtube-dl -o /tmp/%\(title\)s.%\(ext\)s -f18'
 alias ycp="scp tks:/tmp/'*.webm' /tmp"
+alias yycp="scp tks:/tmp/'*.mp4' /tmp"
 
 # Deleted Libraries In Use
 alias dliu='lsof +c 0 | grep '"'"'DEL.*lib'"'"' | awk '"'"'1 { print $1 ": " $NF }'"'"' | sort -u'
