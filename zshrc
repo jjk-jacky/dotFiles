@@ -17,6 +17,11 @@ setopt autocd
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
+autoload up-line-or-beginning-search
+autoload down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
 typeset -A key
@@ -39,8 +44,8 @@ key[C-Right]=$'\033'\[1\;5C
 [[ -n "${key[End]}"     ]]  && bindkey  "${key[End]}"     end-of-line
 [[ -n "${key[Insert]}"  ]]  && bindkey  "${key[Insert]}"  overwrite-mode
 [[ -n "${key[Delete]}"  ]]  && bindkey  "${key[Delete]}"  delete-char
-[[ -n "${key[Up]}"      ]]  && bindkey  "${key[Up]}"      up-line-or-history
-[[ -n "${key[Down]}"    ]]  && bindkey  "${key[Down]}"    down-line-or-history
+[[ -n "${key[Up]}"      ]]  && bindkey  "${key[Up]}"      up-line-or-beginning-search
+[[ -n "${key[Down]}"    ]]  && bindkey  "${key[Down]}"    down-line-or-beginning-search
 [[ -n "${key[Left]}"    ]]  && bindkey  "${key[Left]}"    backward-char
 [[ -n "${key[Right]}"   ]]  && bindkey  "${key[Right]}"   forward-char
 [[ -n "${key[C-Left]}"  ]]  && bindkey  "${key[C-Left]}"  backward-word
@@ -71,8 +76,9 @@ function precmd() {
 function title() {
   [[ $TERM == linux ]] && return
   local t
-  t=$(print "$@" | tr -cd '[:print:]')
-  print -Pn "\e]0;%n@%m:%~ $t\a"
+  t=$(print "$@" | tr -cd '[:print:]' | sed -s 's/%//g')
+#  print -Pn "\e]0;%n@%m:%~ $t\a"
+  print -Pn "\e]2;%n@%m:%~ $t\a"
 }
 
 function preexec() {
